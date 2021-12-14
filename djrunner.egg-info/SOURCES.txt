@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.md
+requirements.txt
+setup.cfg
+setup.py
+djrunner/__init__.py
+djrunner.egg-info/PKG-INFO
+djrunner.egg-info/SOURCES.txt
+djrunner.egg-info/dependency_links.txt
+djrunner.egg-info/requires.txt
+djrunner.egg-info/top_level.txt
