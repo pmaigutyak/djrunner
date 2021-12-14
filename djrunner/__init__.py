@@ -26,7 +26,6 @@ def setup_settings(settings, is_prod=False, **kwargs):
         'SITE_ID': 1,
         'LANGUAGE_CODE': 'uk',
         'LANGUAGES': (('uk', 'UA'), ),
-        'FILE_UPLOAD_PERMISSIONS': 0o755,
         'SILENCED_SYSTEM_CHECKS': ['mysql.E001', 'mysql.W002'],
         'DEFAULT_AUTO_FIELD': 'django.db.models.BigAutoField',
         'DATABASES': {
@@ -53,8 +52,7 @@ def setup_settings(settings, is_prod=False, **kwargs):
             'django.middleware.locale.LocaleMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',
-            'django.middleware.clickjacking.XFrameOptionsMiddleware',
-            'pipeline.middleware.MinifyHTMLMiddleware'
+            'django.middleware.clickjacking.XFrameOptionsMiddleware'
         ],
         'TEMPLATES': [{
             'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -113,13 +111,6 @@ def setup_settings(settings, is_prod=False, **kwargs):
     for app in extra_apps:
         if app not in installed_apps:
             installed_apps.append(app)
-
-    # CRISPY_TEMPLATE_PACK = 'bootstrap3'
-    # CKEDITOR_UPLOAD_PATH = 'uploads/'
-    # NOCAPTCHA = True
-    # RECAPTCHA_PUBLIC_KEY = '6LdHaPsSAAAAAPinOxMD64UtSQtD1J37vp9qjsZw'
-    # RECAPTCHA_PRIVATE_KEY = '6LdHaPsSAAAAAJRHOT4Edilnp-1xSOqttWNk5dar'
-    # THUMBNAIL_QUALITY = 85
 
     if is_prod:
 
