@@ -14,3 +14,4 @@ storage.db
 media
 dist
 *.egg-info
+build
