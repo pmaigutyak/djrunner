@@ -143,11 +143,11 @@ def setup_settings(settings, is_prod=False, **kwargs):
 
         try:
             mod = importlib.import_module(app)
+        except ModuleNotFoundError:
+            continue
 
-            if hasattr(mod, 'setup_settings'):
-                mod.setup_settings(settings, is_prod=False, **kwargs)
-        except Exception:
-            pass
+        if hasattr(mod, 'setup_settings'):
+            mod.setup_settings(settings, is_prod=False, **kwargs)
 
 
 def setup_urlpatterns(
