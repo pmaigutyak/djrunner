@@ -126,7 +126,7 @@ def setup_settings(settings, is_prod=False, **kwargs):
     else:
         default_settings.update({
             'DEBUG': True,
-            'EMAIL_BACKEND': 'basement.email.FileBasedEmailBackend',
+            'EMAIL_BACKEND': 'djrunner.email.FileBasedEmailBackend',
             'CACHES': {
                 'default': {
                     'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
