@@ -26,6 +26,7 @@ Project structure:
 * core/settings.py
 * tmp
 * *.pyc
+* .env
 
 `common_settings.py` example:
 ```
