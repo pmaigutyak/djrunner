@@ -27,14 +27,22 @@ Project structure:
 * tmp
 * *.pyc
 * .env
-
+`.env` example:
+```
+DOMAIN=example.com
+HOST=123.123.123.123
+HOST_PASSWORD=123
+PROJECT_NAME=proj
+DB_NAME=projdb
+DEV_EMAIL=pmaigutyak@gmail.com
+CELERY=off
+```
 `common_settings.py` example:
 ```
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'project secret key'
-DB_NAME = 'project db'
 INSTALLED_APPS = [
   'app1',
   ...
