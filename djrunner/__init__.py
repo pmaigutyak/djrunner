@@ -2,12 +2,12 @@
 import os
 import importlib
 
+from pydoc import locate
+
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView, TemplateView
-
-from pydoc import locate
 
 
 def setup_settings(settings, is_prod=False, **kwargs):
@@ -72,15 +72,6 @@ def setup_settings(settings, is_prod=False, **kwargs):
                 ]
             }
         }],
-        'CONTEXT_PROCESSORS': [
-            'django.template.context_processors.i18n',
-            'django.template.context_processors.debug',
-            'django.template.context_processors.request',
-            'django.template.context_processors.media',
-            'django.template.context_processors.static',
-            'django.contrib.auth.context_processors.auth',
-            'django.contrib.messages.context_processors.messages'
-        ],
         'AUTH_PASSWORD_VALIDATORS': [
             {
                 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -135,7 +126,7 @@ def setup_settings(settings, is_prod=False, **kwargs):
     else:
         default_settings.update({
             'DEBUG': True,
-            'EMAIL_BACKEND': 'basement.email.FileBasedEmailBackend',
+            'EMAIL_BACKEND': 'djrunner.email.FileBasedEmailBackend',
             'CACHES': {
                 'default': {
                     'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
@@ -152,11 +143,11 @@ def setup_settings(settings, is_prod=False, **kwargs):
 
         try:
             mod = importlib.import_module(app)
+        except ModuleNotFoundError:
+            continue
 
-            if hasattr(mod, 'setup_settings'):
-                mod.setup_settings(settings, is_prod=False, **kwargs)
-        except Exception:
-            pass
+        if hasattr(mod, 'setup_settings'):
+            mod.setup_settings(settings, is_prod=False, **kwargs)
 
 
 def setup_urlpatterns(
