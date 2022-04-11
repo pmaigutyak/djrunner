@@ -1,5 +1,6 @@
 
 import os
+import environ
 import importlib
 
 from pydoc import locate
@@ -13,6 +14,15 @@ from django.views.generic import RedirectView, TemplateView
 def setup_settings(settings, is_prod=False, **kwargs):
 
     base_dir = settings['BASE_DIR']
+
+    config = environ.Env()
+    config.read_env(os.path.join(base_dir, '.env'))
+
+    domain = config('DOMAIN')
+    settings['domain'] = domain
+
+    dev_email = config('DEV_EMAIL')
+    settings['dev_email'] = dev_email
 
     default_settings = {
         'ROOT_URLCONF': 'core.urls',
@@ -31,15 +41,15 @@ def setup_settings(settings, is_prod=False, **kwargs):
         'DATABASES': {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql',
-                'NAME': settings['DB_NAME'],
+                'NAME': config('DB_NAME'),
                 'USER': 'dev'
             }
         },
         'ADMINS': (
-            ('Dev', settings.get('DEV_EMAIL', '')),
+            ('Dev', dev_email),
         ),
         'MANAGERS': (
-            ('Dev', settings.get('DEV_EMAIL', '')),
+            ('Dev', dev_email),
         ),
         'LOCALE_PATHS': [
             os.path.join(base_dir, 'locale')
@@ -104,8 +114,6 @@ def setup_settings(settings, is_prod=False, **kwargs):
             installed_apps.append(app)
 
     if is_prod:
-
-        domain = settings.get('DOMAIN', '')
 
         default_settings.update({
             'DEBUG': False,
