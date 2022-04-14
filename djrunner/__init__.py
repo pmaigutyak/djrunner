@@ -19,10 +19,10 @@ def setup_settings(settings, is_prod=False, **kwargs):
     config.read_env(os.path.join(base_dir, '.env'))
 
     domain = config('DOMAIN')
-    settings['domain'] = domain
+    settings['DOMAIN'] = domain
 
     dev_email = config('DEV_EMAIL')
-    settings['dev_email'] = dev_email
+    settings['DEV_EMAIL'] = dev_email
 
     default_settings = {
         'ROOT_URLCONF': 'core.urls',
