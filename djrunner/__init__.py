@@ -155,7 +155,7 @@ def setup_settings(settings, is_prod=False, **kwargs):
             continue
 
         if hasattr(mod, 'setup_settings'):
-            mod.setup_settings(settings, is_prod=False, **kwargs)
+            mod.setup_settings(settings, is_prod=is_prod, **kwargs)
 
 
 def setup_urlpatterns(
