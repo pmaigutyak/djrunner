@@ -4,7 +4,7 @@ import sys
 import environ
 
 from datetime import datetime
-from fabric.api import env, run, local, sudo, cd, prefix, get
+from fabric.api import env, run, local, sudo, cd, prefix, get, put
 from contextlib import contextmanager
 
 
@@ -90,3 +90,25 @@ def setup():
     env.user = 'dev'
     env.hosts = [config('HOST')]
     env.password = config('HOST_PASSWORD')
+
+
+def upload_env():
+
+    put(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'),
+        '/home/dev/sites/{}/{}/.env'.format(
+            config('DOMAIN'), config('PROJECT_NAME'))
+    )
+
+
+def fetch_media():
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    local('rm -r -f {}'.format(os.path.join(base_dir, 'media')))
+
+    local(
+        'scp dev@{}:/home/dev/sites/{}/public/media {}'.format(
+            config('HOST'), config('DOMAIN'), base_dir
+        )
+    )
