@@ -8,6 +8,7 @@ from pydoc import locate
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from django.conf.global_settings import DATE_INPUT_FORMATS
 from django.views.generic import RedirectView, TemplateView
 
 
@@ -36,8 +37,9 @@ def setup_settings(settings, is_prod=False, **kwargs):
         'SITE_ID': 1,
         'LANGUAGE_CODE': 'uk',
         'LANGUAGES': (('uk', 'UA'), ),
-        'SILENCED_SYSTEM_CHECKS': ['mysql.E001', 'mysql.W002'],
+        'SILENCED_SYSTEM_CHECKS': ['mysql.E001', 'mysql.W002', 'fields.W162'],
         'DEFAULT_AUTO_FIELD': 'django.db.models.BigAutoField',
+        'DATE_INPUT_FORMATS': ['%d/%m/%Y'] + DATE_INPUT_FORMATS,
         'DATABASES': {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql',
