@@ -94,7 +94,7 @@ def setup():
 
 def upload_env():
 
-    put(
+    put(  # TODO: fix basedir
         os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'),
         '/home/dev/sites/{}/{}/.env'.format(
             config('DOMAIN'), config('PROJECT_NAME'))
@@ -108,7 +108,7 @@ def fetch_media():
     local('rm -r -f {}'.format(os.path.join(base_dir, 'media')))
 
     local(
-        'scp dev@{}:/home/dev/sites/{}/public/media {}'.format(
-            config('HOST'), config('DOMAIN'), base_dir
+        'scp -r dev@{}:/home/dev/sites/{}/public/media {}'.format(
+            config('HOST'), config('DOMAIN'), base_dir  # TODO: fix basedir
         )
     )
