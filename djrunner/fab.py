@@ -1,14 +1,15 @@
 
-import os
 import sys
 import environ
 
 from datetime import datetime
+from os.path import join, dirname
 from fabric.api import env, run, local, sudo, cd, prefix, get, put
 from contextlib import contextmanager
 
 
 config = environ.Env()
+_STORAGE = {}
 
 
 @contextmanager
@@ -82,20 +83,17 @@ def fetch_db():
 
 def setup():
     frame = sys._getframe()
-    env_file = os.path.join(
-        os.path.dirname(frame.f_back.f_code.co_filename),
-        '.env'
-    )
-    config.read_env(env_file)
+    project_dir = dirname(frame.f_back.f_code.co_filename)
+    config.read_env(join(project_dir, '.env'))
+    env.project_dir = project_dir
     env.user = 'dev'
     env.hosts = [config('HOST')]
     env.password = config('HOST_PASSWORD')
 
 
 def upload_env():
-
-    put(  # TODO: fix basedir
-        os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'),
+    put(
+        join(env.project_dir, '.env'),
         '/home/dev/sites/{}/{}/.env'.format(
             config('DOMAIN'), config('PROJECT_NAME'))
     )
@@ -103,12 +101,20 @@ def upload_env():
 
 def fetch_media():
 
-    base_dir = os.path.dirname(os.path.abspath(__file__))
+    local_media_dir = join(env.project_dir, 'media')
+    local('rm -r -f ' + local_media_dir)
+    local('mkdir ' + local_media_dir)
 
-    local('rm -r -f {}'.format(os.path.join(base_dir, 'media')))
+    remote_media_dir = "/home/dev/sites/%s/public/media" % config('DOMAIN')
+    exclude = ['cache']
 
-    local(
-        'scp -r dev@{}:/home/dev/sites/{}/public/media {}'.format(
-            config('HOST'), config('DOMAIN'), base_dir  # TODO: fix basedir
-        )
-    )
+    for dir_name in run('ls ' + remote_media_dir).split('  '):
+
+        if dir_name in exclude:
+            continue
+
+        local('scp -r dev@{}:{} {}'.format(
+            config('HOST'),
+            join(remote_media_dir, dir_name),
+            local_media_dir
+        ))
