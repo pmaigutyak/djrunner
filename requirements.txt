@@ -6,4 +6,3 @@ psycopg2-binary==2.9.2 # psycopg2 crashes on version 2.9.2
 requests==2.28.2
 six==1.16.0
 django-environ==0.10.0
-djfabric==0.0.2
